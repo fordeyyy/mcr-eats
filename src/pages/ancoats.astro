@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allRestaurants = await getCollection('restaurants');
+const restaurants = allRestaurants
+  .filter(r => r.data.neighbourhood === 'ancoats')
+  .sort((a, b) => (b.data.pick ? 1 : 0) - (a.data.pick ? 1 : 0));
+---
+
+<BaseLayout title="Ancoats">
+
+  <div class="page-header">
+    <span class="page-eyebrow">Neighbourhood 02</span>
+    <h1 class="page-title">Ancoats</h1>
+    <p class="page-strapline">The mill district reborn. Serious cooking in converted spaces that remember what they used to be.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>Ancoats is where Manchester's food scene makes its best argument for itself. Ambitious, considered, and still broadly affordable.</p>
+  </div>
+
+  <div class="r-list">
+    {restaurants.map(restaurant => (
+      <a href={`/restaurants/${restaurant.id}`} class="r-row">
+        <div class="r-meta">
+          <span class="r-cuisine">{restaurant.data.cuisine}</span>
+          <span class="r-dot" aria-hidden="true">·</span>
+          <span class="r-price">{restaurant.data.price}</span>
+          {restaurant.data.pick && (
+            <>
+              <span class="r-dot" aria-hidden="true">·</span>
+              <span class="r-pick">Editor's pick</span>
+            </>
+          )}
+        </div>
+        <div class="r-name">{restaurant.data.name}</div>
+        <div class="r-address">{restaurant.data.address}</div>
+        <p class="r-desc">{restaurant.body?.slice(0, 200)}…</p>
+      </a>
+    ))}
+  </div>
+
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: 3rem 3rem 0;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2.5rem;
+  }
+
+  .page-eyebrow {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .page-strapline {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    max-width: 56ch;
+    line-height: 1.6;
+  }
+
+  .pull-quote {
+    padding: 2rem 3rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .pull-quote p {
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-style: italic;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    max-width: 72ch;
+  }
+
+  .r-list {
+    padding: 0 3rem;
+  }
+
+  .r-row {
+    display: block;
+    padding: 2.25rem 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 0.15s;
+    margin: 0 -3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .r-row:first-child {
+    border-top: 1px solid var(--rule);
+  }
+
+  .r-row:hover { background: var(--surface); }
+
+  .r-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .r-dot { color: var(--rule-dark); }
+  .r-pick { color: var(--accent); }
+
+  .r-name {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+  }
+
+  .r-address {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: var(--ink-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.85rem;
+  }
+
+  .r-desc {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  @media (max-width: 640px) {
+    .page-header, .pull-quote, .r-list { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .r-row { margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+</style>

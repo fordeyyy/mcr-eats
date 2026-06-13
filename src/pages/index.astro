@@ -1,17 +1,125 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home">
+
+  <div class="intro">
+    <p>Manchester eats well — and it always has. Three neighbourhoods, three moods, no shortage of opinions. This is a guide to eating in the city the way locals actually do it.</p>
+  </div>
+
+  <div class="n-grid">
+
+    <a href="/northern-quarter" class="n-card">
+      <span class="n-num">01</span>
+      <h2 class="n-name">Northern<br>Quarter</h2>
+      <p class="n-desc">Indie records, exposed brick, and menus that don't explain themselves.</p>
+      <span class="n-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a href="/ancoats" class="n-card">
+      <span class="n-num">02</span>
+      <h2 class="n-name">Ancoats</h2>
+      <p class="n-desc">The mill district reborn. Serious cooking in converted spaces.</p>
+      <span class="n-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a href="/chorlton" class="n-card">
+      <span class="n-num">03</span>
+      <h2 class="n-name">Chorlton</h2>
+      <p class="n-desc">South Manchester's village with a chip on its shoulder and good reason for it.</p>
+      <span class="n-arrow" aria-hidden="true">→</span>
+    </a>
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  .intro {
+    padding: 3rem 3rem 2.5rem;
+    max-width: 640px;
+  }
+
+  .intro p {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  .n-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .n-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2.5rem 2.5rem 2rem;
+    border-right: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .n-card:last-child { border-right: none; }
+  .n-card:hover { background: var(--surface); }
+
+  .n-num {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .n-name {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+
+  .n-desc {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  .n-arrow {
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: var(--rule-dark);
+    transition: color 0.15s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .n-card:hover .n-arrow {
+    color: var(--ink);
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 640px) {
+    .n-grid {
+      grid-template-columns: 1fr;
+    }
+    .n-card {
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .n-card:last-child { border-bottom: none; }
+  }
+</style>

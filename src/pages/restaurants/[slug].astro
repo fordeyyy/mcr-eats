@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const restaurants = await getCollection('restaurants');
+  return restaurants.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const r = entry.data;
+
+const neighbourhoodLabels: Record<string, string> = {
+  'ancoats': 'Ancoats',
+  'northern-quarter': 'Northern Quarter',
+  'chorlton': 'Chorlton',
+};
+const neighbourhoodLabel = neighbourhoodLabels[r.neighbourhood];
+---
+
+<BaseLayout title={r.name}>
+
+  <div class="detail-wrap">
+
+    <div class="back">
+      <a href={`/${r.neighbourhood}`}>← {neighbourhoodLabel}</a>
+    </div>
+
+    <div class="detail-meta">
+      <span>{r.cuisine}</span>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>{r.price}</span>
+      {r.pick && (
+        <>
+          <span class="dot" aria-hidden="true">·</span>
+          <span class="pick">Editor's pick</span>
+        </>
+      )}
+    </div>
+
+    <h1 class="detail-name">{r.name}</h1>
+
+    <p class="detail-address">{r.address}</p>
+
+    {r.image && (
+      <div class="photo-wrap">
+        <img src={r.image} alt={r.name} />
+      </div>
+    )}
+
+    <div class="detail-rule"></div>
+
+    <p class="detail-desc">{entry.body}</p>
+
+    <div class="detail-rule"></div>
+
+    <div class="detail-links">
+      {r.website && (
+        <a href={r.website} target="_blank" rel="noopener" class="link-primary">
+          Visit website →
+        </a>
+      )}
+      {r.mapsUrl && (
+        <a href={r.mapsUrl} target="_blank" rel="noopener" class="link-secondary">
+          View on map →
+        </a>
+      )}
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  .detail-wrap {
+    padding: 3rem 3rem 4rem;
+    max-width: 780px;
+  }
+
+  .back {
+    margin-bottom: 2rem;
+  }
+
+  .back a {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .back a:hover { color: var(--ink); }
+
+  .detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .dot { color: var(--rule-dark); }
+  .pick { color: var(--accent); }
+
+  .detail-name {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+
+  .detail-address {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .photo-wrap {
+    margin-top: 2rem;
+  }
+
+  .photo-wrap img {
+    width: 100%;
+    height: 460px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .detail-rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  .detail-desc {
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 2.2vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--ink-mid);
+  }
+
+  .detail-links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .link-primary,
+  .link-secondary {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .link-primary {
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+  }
+
+  .link-primary:hover { color: var(--accent); border-color: var(--accent); }
+
+  .link-secondary {
+    color: var(--ink-muted);
+  }
+
+  .link-secondary:hover { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .detail-wrap { padding: 2rem 1.5rem 3rem; }
+  }
+</style>

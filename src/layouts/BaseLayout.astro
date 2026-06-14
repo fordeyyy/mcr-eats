@@ -47,67 +47,7 @@ const metaDescription = description ?? 'A Manchester neighbourhood restaurant gu
     <header class="masthead">
       <div class="masthead-inner">
         <p class="masthead-kicker">A Manchester neighbourhood restaurant guide</p>
-        <a href="/" class="masthead-logo" aria-label="MCR Eats — Home">
-          <svg viewBox="0 0 280 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <defs>
-              <clipPath id="bee-abdomen">
-                <ellipse cx="140" cy="110" rx="13" ry="21"/>
-              </clipPath>
-            </defs>
-
-            <!-- Knife -->
-            <path d="M 40,136 L 41.5,54 Q 43.5,34 45.5,54 L 46,136 Z" fill="var(--ink)"/>
-            <rect x="38" y="136" width="10" height="7" rx="1.5" fill="var(--ink)"/>
-            <rect x="39.5" y="144" width="7" height="28" rx="3.5" fill="var(--ink)"/>
-
-            <!-- Hexagon -->
-            <polygon points="140,27 199,61 199,130 140,164 81,130 81,61"
-              fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="miter"/>
-
-            <!-- Upper wings -->
-            <ellipse cx="120" cy="79" rx="18" ry="7.5"
-              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
-              transform="rotate(-35 120 79)"/>
-            <ellipse cx="160" cy="79" rx="18" ry="7.5"
-              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
-              transform="rotate(35 160 79)"/>
-
-            <!-- Lower wings -->
-            <ellipse cx="124" cy="97" rx="13" ry="5.5"
-              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
-              transform="rotate(-20 124 97)"/>
-            <ellipse cx="156" cy="97" rx="13" ry="5.5"
-              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
-              transform="rotate(20 156 97)"/>
-
-            <!-- Abdomen -->
-            <ellipse cx="140" cy="110" rx="13" ry="21" fill="var(--ink)"/>
-            <rect x="127" y="98"  width="26" height="5" clip-path="url(#bee-abdomen)" fill="var(--accent)"/>
-            <rect x="127" y="110" width="26" height="5" clip-path="url(#bee-abdomen)" fill="var(--accent)"/>
-            <rect x="127" y="122" width="26" height="4" clip-path="url(#bee-abdomen)" fill="var(--accent)"/>
-
-            <!-- Stinger -->
-            <polygon points="137,130 143,130 140,140" fill="var(--ink)"/>
-
-            <!-- Thorax -->
-            <ellipse cx="140" cy="85" rx="10" ry="9" fill="var(--ink)"/>
-
-            <!-- Head -->
-            <circle cx="140" cy="70" r="8" fill="var(--ink)"/>
-            <circle cx="136.5" cy="68" r="1.8" fill="var(--bg)"/>
-            <circle cx="143.5" cy="68" r="1.8" fill="var(--bg)"/>
-
-            <!-- Antennae -->
-            <line x1="137" y1="63" x2="128" y2="49" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="127" cy="48" r="2.5" fill="var(--ink)"/>
-            <line x1="143" y1="63" x2="152" y2="49" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="153" cy="48" r="2.5" fill="var(--ink)"/>
-
-            <!-- Spoon -->
-            <ellipse cx="237" cy="55" rx="11" ry="20" fill="var(--ink)"/>
-            <rect x="234.5" y="75" width="5" height="97" rx="2.5" fill="var(--ink)"/>
-          </svg>
-        </a>
+        <a href="/" class="masthead-logo">MCR Eats</a>
       </div>
     </header>
 
@@ -239,16 +179,14 @@ const metaDescription = description ?? 'A Manchester neighbourhood restaurant gu
 
   .masthead-logo {
     display: block;
-    width: clamp(120px, 18vw, 190px);
-    margin: 0.75rem auto 0;
+    font-family: var(--serif);
+    font-size: clamp(var(--step-5), 6vw, var(--step-6));
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
     color: var(--ink);
     text-decoration: none;
-  }
-
-  .masthead-logo svg {
-    width: 100%;
-    height: auto;
-    display: block;
+    margin-top: 0.5rem;
   }
 
   /* ── Nav ── */

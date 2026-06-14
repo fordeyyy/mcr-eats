@@ -1,0 +1,85 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: pages
+    label: Pages
+    files:
+      - name: home
+        label: Homepage
+        file: src/content/pages/home.md
+        fields:
+          - { name: introTitle, label: Intro title, widget: string }
+          - { name: introText, label: Intro text, widget: text }
+
+  - name: neighbourhoods
+    label: Neighbourhoods
+    folder: src/content/neighbourhoods
+    format: frontmatter
+    identifier_field: label
+    fields:
+      - { name: label, label: Name, widget: string }
+      - { name: slug, label: Slug, widget: string }
+      - { name: strapline, label: Strapline, widget: text }
+      - { name: pullQuote, label: Pull quote, widget: text }
+
+  - name: restaurants
+    label: Restaurants
+    folder: src/content/restaurants
+    format: frontmatter
+    create: true
+    identifier_field: name
+    slug: "{{slug}}"
+    fields:
+      - { name: name, label: Name, widget: string }
+      - name: neighbourhood
+        label: Neighbourhood
+        widget: select
+        options:
+          - { label: Northern Quarter, value: northern-quarter }
+          - { label: Ancoats, value: ancoats }
+          - { label: Chorlton, value: chorlton }
+          - { label: Didsbury, value: didsbury }
+          - { label: Spinningfields, value: spinningfields }
+          - { label: Rusholme, value: rusholme }
+          - { label: Deansgate, value: deansgate }
+      - { name: cuisine, label: Cuisine, widget: string }
+      - name: price
+        label: Price
+        widget: select
+        options: ['£', '££', '£££', '££££']
+      - { name: address, label: Address, widget: string }
+      - { name: summary, label: Summary (card teaser), widget: text, required: false }
+      - { name: website, label: Website URL, widget: string, required: false }
+      - { name: mapsUrl, label: Google Maps URL, widget: string, required: false }
+      - { name: image, label: Image, widget: image, required: false }
+      - { name: pick, label: "Editor's pick", widget: boolean, default: false, required: false }
+      - name: moods
+        label: Moods
+        widget: select
+        multiple: true
+        required: false
+        options:
+          - Date night
+          - Sunday lunch
+          - Cheap & cheerful
+          - Special occasion
+          - Good for groups
+          - Solo dining
+          - Quick bite
+          - Worth the journey
+      - name: dishes
+        label: Top dishes
+        widget: list
+        required: false
+      - name: openDays
+        label: Open days
+        widget: select
+        multiple: true
+        required: false
+        options: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+      - { name: body, label: Full description, widget: markdown }

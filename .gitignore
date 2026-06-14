@@ -26,5 +26,5 @@ pnpm-debug.log*
 # Netlify
 .netlify/
 
-# Tina build output
-public/admin/
+# Tina (removed)
+tina/

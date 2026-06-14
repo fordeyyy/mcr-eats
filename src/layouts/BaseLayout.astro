@@ -2,8 +2,13 @@
 import { MOODS } from '../lib/moods';
 import { NEIGHBOURHOODS } from '../lib/neighbourhoods';
 
-const { title } = Astro.props;
+const { title, description, image } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
+const siteUrl = 'https://mcr-bites.netlify.app';
+const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
+const ogImage = image ? (image.startsWith('http') ? image : `${siteUrl}${image}`) : null;
+const pageTitle = title === 'Home' ? 'MCR Eats' : `${title} — MCR Eats`;
+const metaDescription = description ?? 'A Manchester neighbourhood restaurant guide. Seven neighbourhoods, one guide, no shortage of opinions.';
 ---
 
 <!DOCTYPE html>
@@ -11,7 +16,24 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — MCR Eats</title>
+  <title>{pageTitle}</title>
+  <meta name="description" content={metaDescription} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MCR Eats" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={metaDescription} />
+  <meta property="og:url" content={canonicalUrl} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={metaDescription} />
+  {ogImage && <meta name="twitter:image" content={ogImage} />}
+
   <link rel="stylesheet" href="https://use.typekit.net/oat5ofj.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

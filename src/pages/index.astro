@@ -13,7 +13,7 @@ const allPages = await getCollection('pages');
 const home = allPages.find(p => p.id === 'home')?.data;
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" description={home?.introText}>
 
   <div class="intro">
     {home?.introTitle && <h2 class="intro-title">{home.introTitle}</h2>}

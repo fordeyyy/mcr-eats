@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 const { mood, restaurants } = Astro.props;
 ---
 
-<BaseLayout title={mood}>
+<BaseLayout title={mood} description={`Manchester restaurants good for ${mood.toLowerCase()}. A curated selection from the MCR Eats guide.`}>
 
   <div class="page-header">
     <span class="page-eyebrow">Good for</span>

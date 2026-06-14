@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 const { cuisine, restaurants } = Astro.props;
 ---
 
-<BaseLayout title={cuisine}>
+<BaseLayout title={cuisine} description={`The best ${cuisine} restaurants in Manchester, from the MCR Eats guide.`}>
 
   <div class="page-header">
     <span class="page-eyebrow">Cuisine</span>

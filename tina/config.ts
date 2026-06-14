@@ -101,9 +101,9 @@ export default defineConfig({
             label: 'Google Maps URL',
           },
           {
-            type:  'string',
+            type:  'image',
             name:  'image',
-            label: 'Image URL',
+            label: 'Image',
           },
           {
             type:  'boolean',

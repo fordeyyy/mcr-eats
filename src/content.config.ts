@@ -13,6 +13,10 @@ const restaurants = defineCollection({
     mapsUrl: z.string().optional(),
     image: z.string().optional(),
     pick: z.boolean().optional(),
+    moods: z.array(z.string()).optional(),
+    summary: z.string().optional(),
+    dishes: z.array(z.string()).optional(),
+    openDays: z.array(z.string()).optional(),
   }),
 });
 

@@ -7,6 +7,21 @@ address: "George Leigh St, M4 5DG"
 website: "https://www.erstmanchester.co.uk"
 mapsUrl: "https://maps.google.com/?q=Erst+Manchester"
 pick: true
+moods:
+  - Date night
+  - Special occasion
+  - Worth the journey
+summary: "Small, seasonal, and genuinely excellent. Erst does restrained-but-confident European cooking that makes you feel quietly lucky to be eating it."
+openDays:
+  - Wednesday
+  - Thursday
+  - Friday
+  - Saturday
+  - Sunday
+dishes:
+  - Cured beef, pickled walnut
+  - Smoked bone marrow on toast
+  - Tarte tatin for two
 ---
 
 Small, seasonal, and genuinely excellent. Erst does the sort of restrained-but-confident European cooking that makes you feel quietly lucky to be eating it. The wine list is serious and the room is calm without being precious. Book ahead — it fills up fast and for good reason.

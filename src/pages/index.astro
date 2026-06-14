@@ -1,36 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import RestaurantCard from '../components/RestaurantCard.astro';
+import { getCollection } from 'astro:content';
+import { NEIGHBOURHOODS } from '../lib/neighbourhoods';
+
+const allRestaurants = await getCollection('restaurants');
+const featured = [...allRestaurants]
+  .sort((a, b) => (b.data.pick ? 1 : 0) - (a.data.pick ? 1 : 0))
+  .slice(0, 6);
 ---
 
 <BaseLayout title="Home">
 
   <div class="intro">
-    <p>Manchester eats well — and it always has. Three neighbourhoods, three moods, no shortage of opinions. This is a guide to eating in the city the way locals actually do it.</p>
+    <h2 class="intro-title">The city on a plate.</h2>
+    <p>Manchester eats well — and it always has. Seven neighbourhoods, one guide, no shortage of opinions. This is how locals actually do it.</p>
+  </div>
+
+  <div class="section-header">
+    <span class="section-label">View by neighbourhood</span>
   </div>
 
   <div class="n-grid">
+    {NEIGHBOURHOODS.map(n => (
+      <a href={`/${n.slug}`} class="n-card" data-neighbourhood={n.slug}>
+        <h2 class="n-name">{n.label}</h2>
+        <span class="n-arrow" aria-hidden="true">→</span>
+      </a>
+    ))}
+  </div>
 
-    <a href="/northern-quarter" class="n-card">
-      <span class="n-num">01</span>
-      <h2 class="n-name">Northern<br>Quarter</h2>
-      <p class="n-desc">Indie records, exposed brick, and menus that don't explain themselves.</p>
-      <span class="n-arrow" aria-hidden="true">→</span>
-    </a>
-
-    <a href="/ancoats" class="n-card">
-      <span class="n-num">02</span>
-      <h2 class="n-name">Ancoats</h2>
-      <p class="n-desc">The mill district reborn. Serious cooking in converted spaces.</p>
-      <span class="n-arrow" aria-hidden="true">→</span>
-    </a>
-
-    <a href="/chorlton" class="n-card">
-      <span class="n-num">03</span>
-      <h2 class="n-name">Chorlton</h2>
-      <p class="n-desc">South Manchester's village with a chip on its shoulder and good reason for it.</p>
-      <span class="n-arrow" aria-hidden="true">→</span>
-    </a>
-
+  <div class="featured">
+    <div class="featured-header">
+      <span class="featured-label">From the guide</span>
+    </div>
+    <div class="featured-grid">
+      {featured.map(entry => <RestaurantCard entry={entry} />)}
+    </div>
   </div>
 
 </BaseLayout>
@@ -38,88 +44,140 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <style>
   .intro {
     padding: 3rem 3rem 2.5rem;
-    max-width: 640px;
+    max-width: 680px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .intro-title {
+    font-family: var(--serif);
+    font-size: clamp(var(--step-3), 3.5vw, var(--step-5));
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 1rem;
   }
 
   .intro p {
-    font-family: var(--serif);
-    font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    font-family: var(--sans);
+    font-size: clamp(var(--step-1), 1.5vw, var(--step-2));
     font-style: italic;
     font-weight: 400;
     color: var(--ink-mid);
     line-height: 1.7;
   }
 
+  .section-header {
+    padding: 1.25rem 1.5rem;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-muted);
+  }
+
   .n-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--ink);
+    grid-template-columns: repeat(4, 1fr);
     border-bottom: 1px solid var(--rule);
   }
 
   .n-card {
     display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    padding: 2.5rem 2.5rem 2rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
     border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
     text-decoration: none;
     color: var(--ink);
-    transition: background 0.15s;
-    position: relative;
+    transition: background 0.15s, color 0.15s;
   }
 
-  .n-card:last-child { border-right: none; }
-  .n-card:hover { background: var(--surface); }
+  .n-card:nth-child(4n) { border-right: none; }
+  .n-card:nth-last-child(-n+4) { border-bottom: none; }
+  .n-card:hover { background: var(--hover-bg); color: var(--bg); }
 
-  .n-num {
-    font-family: var(--sans);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
+  .n-card[data-neighbourhood="northern-quarter"]:hover { background: #C85528; }
+  .n-card[data-neighbourhood="ancoats"]:hover           { background: #257870; }
+  .n-card[data-neighbourhood="chorlton"]:hover          { background: #6E4E9E; }
+  .n-card[data-neighbourhood="didsbury"]:hover          { background: #427A30; }
+  .n-card[data-neighbourhood="spinningfields"]:hover    { background: #255080; }
+  .n-card[data-neighbourhood="rusholme"]:hover          { background: #C07820; }
+  .n-card[data-neighbourhood="deansgate"]:hover         { background: #7A2858; }
 
   .n-name {
     font-family: var(--serif);
-    font-size: clamp(2.2rem, 4vw, 3.6rem);
-    font-weight: 600;
-    font-style: italic;
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    flex: 1;
-  }
-
-  .n-desc {
-    font-family: var(--sans);
-    font-size: 0.82rem;
-    font-weight: 300;
-    color: var(--ink-muted);
-    line-height: 1.65;
+    font-size: var(--step-2);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
   }
 
   .n-arrow {
     font-family: var(--sans);
-    font-size: 1rem;
+    font-size: var(--step-1);
     color: var(--rule-dark);
     transition: color 0.15s, transform 0.15s;
     display: inline-block;
+    flex-shrink: 0;
   }
 
   .n-card:hover .n-arrow {
-    color: var(--ink);
-    transform: translateX(4px);
+    color: inherit;
+    transform: translateX(3px);
   }
 
-  @media (max-width: 640px) {
-    .n-grid {
-      grid-template-columns: 1fr;
-    }
-    .n-card {
-      border-right: none;
-      border-bottom: 1px solid var(--rule);
-    }
-    .n-card:last-child { border-bottom: none; }
+  /* ── Featured restaurants ── */
+
+  .featured {
+    border-top: 2px solid var(--ink);
+  }
+
+  .featured-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .featured-label {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-muted);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  @media (max-width: 900px) {
+    .n-grid { grid-template-columns: repeat(2, 1fr); }
+    .n-card { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .n-card:nth-child(2n) { border-right: none; }
+  }
+
+  @media (max-width: 768px) {
+    .featured-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 480px) {
+    .n-grid, .featured-grid { grid-template-columns: 1fr; }
+    .n-card { border-right: none; }
   }
 </style>

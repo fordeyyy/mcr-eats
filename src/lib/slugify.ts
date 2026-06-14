@@ -1,0 +1,11 @@
+function toSlug(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+export const cuisineToSlug = toSlug;
+export const moodToSlug = toSlug;

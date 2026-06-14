@@ -1,5 +1,9 @@
 ---
+import { MOODS } from '../lib/moods';
+import { NEIGHBOURHOODS } from '../lib/neighbourhoods';
+
 const { title } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
 ---
 
 <!DOCTYPE html>
@@ -8,27 +12,114 @@ const { title } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title} — MCR Eats</title>
+  <link rel="stylesheet" href="https://use.typekit.net/oat5ofj.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <slot name="head" />
 </head>
 <body>
   <div class="site-wrap">
 
     <header class="masthead">
-      <p class="masthead-kicker">A Manchester neighbourhood restaurant guide</p>
-      <a href="/" class="masthead-wordmark">MCR <em>Eats</em></a>
+      <div class="masthead-inner">
+        <p class="masthead-kicker">A Manchester neighbourhood restaurant guide</p>
+        <a href="/" class="masthead-logo" aria-label="MCR Eats — Home">
+          <svg viewBox="0 0 280 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="bee-abdomen">
+                <ellipse cx="140" cy="110" rx="13" ry="21"/>
+              </clipPath>
+            </defs>
+
+            <!-- Knife -->
+            <path d="M 40,136 L 41.5,54 Q 43.5,34 45.5,54 L 46,136 Z" fill="var(--ink)"/>
+            <rect x="38" y="136" width="10" height="7" rx="1.5" fill="var(--ink)"/>
+            <rect x="39.5" y="144" width="7" height="28" rx="3.5" fill="var(--ink)"/>
+
+            <!-- Hexagon -->
+            <polygon points="140,27 199,61 199,130 140,164 81,130 81,61"
+              fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="miter"/>
+
+            <!-- Upper wings -->
+            <ellipse cx="120" cy="79" rx="18" ry="7.5"
+              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
+              transform="rotate(-35 120 79)"/>
+            <ellipse cx="160" cy="79" rx="18" ry="7.5"
+              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
+              transform="rotate(35 160 79)"/>
+
+            <!-- Lower wings -->
+            <ellipse cx="124" cy="97" rx="13" ry="5.5"
+              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
+              transform="rotate(-20 124 97)"/>
+            <ellipse cx="156" cy="97" rx="13" ry="5.5"
+              fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"
+              transform="rotate(20 156 97)"/>
+
+            <!-- Abdomen -->
+            <ellipse cx="140" cy="110" rx="13" ry="21" fill="var(--ink)"/>
+            <rect x="127" y="98"  width="26" height="5" clip-path="url(#bee-abdomen)" fill="var(--accent)"/>
+            <rect x="127" y="110" width="26" height="5" clip-path="url(#bee-abdomen)" fill="var(--accent)"/>
+            <rect x="127" y="122" width="26" height="4" clip-path="url(#bee-abdomen)" fill="var(--accent)"/>
+
+            <!-- Stinger -->
+            <polygon points="137,130 143,130 140,140" fill="var(--ink)"/>
+
+            <!-- Thorax -->
+            <ellipse cx="140" cy="85" rx="10" ry="9" fill="var(--ink)"/>
+
+            <!-- Head -->
+            <circle cx="140" cy="70" r="8" fill="var(--ink)"/>
+            <circle cx="136.5" cy="68" r="1.8" fill="var(--bg)"/>
+            <circle cx="143.5" cy="68" r="1.8" fill="var(--bg)"/>
+
+            <!-- Antennae -->
+            <line x1="137" y1="63" x2="128" y2="49" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="127" cy="48" r="2.5" fill="var(--ink)"/>
+            <line x1="143" y1="63" x2="152" y2="49" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="153" cy="48" r="2.5" fill="var(--ink)"/>
+
+            <!-- Spoon -->
+            <ellipse cx="237" cy="55" rx="11" ry="20" fill="var(--ink)"/>
+            <rect x="234.5" y="75" width="5" height="97" rx="2.5" fill="var(--ink)"/>
+          </svg>
+        </a>
+      </div>
     </header>
 
     <nav class="nav-strip">
-      <a href="/">Home</a>
-      <a href="/northern-quarter">Northern Quarter</a>
-      <a href="/ancoats">Ancoats</a>
-      <a href="/chorlton">Chorlton</a>
+      <div class="nav-inner">
+        <a href="/" class={`nav-home${currentPath === '' ? ' active' : ''}`}>Home</a>
+
+        <div class="nav-dropdown">
+          <span class="nav-trigger">Neighbourhoods ↓</span>
+          <div class="nav-menu">
+            <div class="nav-menu-inner">
+              {NEIGHBOURHOODS.map(n => (
+                <a href={`/${n.slug}`} class={currentPath === `/${n.slug}` ? 'active' : ''}>{n.label}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-dropdown">
+          <span class="nav-trigger">Mood ↓</span>
+          <div class="nav-menu">
+            <div class="nav-menu-inner">
+              {MOODS.map(m => (
+                <a href={`/mood/${m.slug}`} class={currentPath === `/mood/${m.slug}` ? 'active' : ''}>{m.label}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <main>
-      <slot />
+      <div class="main-inner">
+        <slot />
+      </div>
     </main>
 
     <footer class="footer">
@@ -46,17 +137,31 @@ const { title } = Astro.props;
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #ffffff;
-    --surface: #f8f6f3;
-    --rule: #dedad3;
-    --rule-dark: #b5b0a8;
-    --ink: #0f0f0d;
-    --ink-mid: #3a3835;
-    --ink-muted: #7c7870;
-    --accent: #c8401a;
+    --bg: #fdf8ec;
+    --surface: #f5ecda;
+    --rule: #e5d4b0;
+    --rule-dark: #c8a870;
+    --ink: #281c0a;
+    --ink-mid: #4e3318;
+    --ink-muted: #896840;
+    --accent: #C8A000;
+    --hover-bg: #e8c230;
+    --hover-ink: #1a0800;
 
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --sans: 'Libre Franklin', system-ui, sans-serif;
+    /* ── Type scale (Major Third ×1.25) ── */
+    --step--1: 0.64rem;
+    --step-0:  0.8rem;
+    --step-1:  1rem;
+    --step-2:  1.25rem;
+    --step-3:  1.563rem;
+    --step-4:  1.953rem;
+    --step-5:  2.441rem;
+    --step-6:  3.052rem;
+    --step-7:  3.815rem;
+
+    --serif: 'early-sans-variable', system-ui, sans-serif;
+    --sans: 'late-serif-variable', Georgia, serif;
+    --mono: 'letter-gothic-recast', 'DM Mono', 'Courier New', monospace;
   }
 
   html { scroll-behavior: smooth; }
@@ -83,16 +188,27 @@ const { title } = Astro.props;
 
   main { flex: 1; }
 
+  .main-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
   /* ── Masthead ── */
   .masthead {
-    text-align: center;
-    padding: 2.5rem 2rem 2rem;
     border-bottom: 2px solid var(--ink);
   }
 
+  .masthead-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+  }
+
   .masthead-kicker {
-    font-family: var(--sans);
-    font-size: 0.62rem;
+    font-family: var(--serif);
+    font-size: var(--step--1);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.18em;
@@ -100,35 +216,38 @@ const { title } = Astro.props;
     margin-bottom: 0.75rem;
   }
 
-  .masthead-wordmark {
+  .masthead-logo {
     display: block;
-    font-family: var(--serif);
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    text-decoration: none;
+    width: clamp(120px, 18vw, 190px);
+    margin: 0.75rem auto 0;
     color: var(--ink);
+    text-decoration: none;
   }
 
-  .masthead-wordmark em {
-    font-style: italic;
-    color: var(--accent);
+  .masthead-logo svg {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* ── Nav ── */
   .nav-strip {
     border-bottom: 1px solid var(--rule);
-    padding: 0.8rem 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    overflow-x: auto;
   }
 
-  .nav-strip a {
-    font-family: var(--sans);
-    font-size: 0.65rem;
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .nav-home,
+  .nav-trigger {
+    font-family: var(--serif);
+    font-size: var(--step--1);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -136,18 +255,77 @@ const { title } = Astro.props;
     text-decoration: none;
     white-space: nowrap;
     transition: color 0.15s;
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.25rem;
   }
 
-  .nav-strip a:hover { color: var(--ink); }
+  .nav-home:first-child { padding-left: 0; }
+  .nav-home:hover { color: var(--ink); }
+  .nav-home.active { color: var(--ink); }
+
+  /* ── Shared dropdown ── */
+  .nav-dropdown {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .nav-dropdown + .nav-dropdown { margin-left: 0; }
+
+  .nav-trigger {
+    cursor: default;
+    user-select: none;
+  }
+
+  .nav-dropdown:hover .nav-trigger { color: var(--ink); }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    padding-top: 0.6rem;
+    min-width: 190px;
+    z-index: 100;
+  }
+
+  .nav-dropdown:hover .nav-menu { display: block; }
+
+  .nav-menu-inner {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  }
+
+  .nav-menu a {
+    display: block;
+    font-family: var(--serif);
+    font-size: var(--step-0);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .nav-menu a:last-child { border-bottom: none; }
+  .nav-menu a:hover { color: var(--ink); background: var(--surface); }
+  .nav-menu a.active { color: var(--accent); }
 
   /* ── Footer ── */
   .footer {
     border-top: 2px solid var(--ink);
-    padding: 1.5rem 2rem;
     margin-top: 5rem;
   }
 
   .footer-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -163,8 +341,8 @@ const { title } = Astro.props;
   }
 
   .footer-meta {
-    font-family: var(--sans);
-    font-size: 0.62rem;
+    font-family: var(--serif);
+    font-size: var(--step--1);
     font-weight: 400;
     color: var(--ink-muted);
     letter-spacing: 0.04em;

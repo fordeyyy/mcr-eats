@@ -20,4 +20,22 @@ const restaurants = defineCollection({
   }),
 });
 
-export const collections = { restaurants };
+const neighbourhoods = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/neighbourhoods' }),
+  schema: z.object({
+    slug: z.string(),
+    label: z.string(),
+    strapline: z.string(),
+    pullQuote: z.string(),
+  }),
+});
+
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
+  schema: z.object({
+    introTitle: z.string(),
+    introText: z.string(),
+  }),
+});
+
+export const collections = { restaurants, neighbourhoods, pages };

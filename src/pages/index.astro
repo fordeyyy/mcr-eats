@@ -8,13 +8,16 @@ const allRestaurants = await getCollection('restaurants');
 const featured = [...allRestaurants]
   .sort((a, b) => (b.data.pick ? 1 : 0) - (a.data.pick ? 1 : 0))
   .slice(0, 6);
+
+const allPages = await getCollection('pages');
+const home = allPages.find(p => p.id === 'home')?.data;
 ---
 
 <BaseLayout title="Home">
 
   <div class="intro">
-    <h2 class="intro-title">The city on a plate.</h2>
-    <p>Manchester eats well — and it always has. Seven neighbourhoods, one guide, no shortage of opinions. This is how locals actually do it.</p>
+    {home?.introTitle && <h2 class="intro-title">{home.introTitle}</h2>}
+    {home?.introText && <p>{home.introText}</p>}
   </div>
 
   <div class="section-header">

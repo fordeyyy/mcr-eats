@@ -46,6 +46,60 @@ export default defineConfig({
   schema: {
     collections: [
       {
+        name:   'page',
+        label:  'Pages',
+        path:   'src/content/pages',
+        format: 'md',
+        fields: [
+          {
+            type:     'string',
+            name:     'introTitle',
+            label:    'Intro title',
+            required: true,
+            isTitle:  true,
+          },
+          {
+            type:  'string',
+            name:  'introText',
+            label: 'Intro text',
+            ui:    { component: 'textarea' },
+          },
+        ],
+      },
+      {
+        name:   'neighbourhood',
+        label:  'Neighbourhoods',
+        path:   'src/content/neighbourhoods',
+        format: 'md',
+        fields: [
+          {
+            type:     'string',
+            name:     'label',
+            label:    'Name',
+            required: true,
+            isTitle:  true,
+          },
+          {
+            type:     'string',
+            name:     'slug',
+            label:    'Slug',
+            required: true,
+          },
+          {
+            type:  'string',
+            name:  'strapline',
+            label: 'Strapline',
+            ui:    { component: 'textarea' },
+          },
+          {
+            type:  'string',
+            name:  'pullQuote',
+            label: 'Pull quote',
+            ui:    { component: 'textarea' },
+          },
+        ],
+      },
+      {
         name:   'restaurant',
         label:  'Restaurants',
         path:   'src/content/restaurants',

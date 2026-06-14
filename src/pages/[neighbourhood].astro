@@ -6,31 +6,39 @@ import { NEIGHBOURHOODS } from '../lib/neighbourhoods';
 
 export async function getStaticPaths() {
   const allRestaurants = await getCollection('restaurants');
+  const allNeighbourhoods = await getCollection('neighbourhoods');
 
-  return NEIGHBOURHOODS.map(n => ({
-    params: { neighbourhood: n.slug },
-    props: {
-      neighbourhood: n,
-      restaurants: allRestaurants
-        .filter(r => r.data.neighbourhood === n.slug)
-        .sort((a, b) => (b.data.pick ? 1 : 0) - (a.data.pick ? 1 : 0)),
-    },
-  }));
+  return NEIGHBOURHOODS.map(n => {
+    const content = allNeighbourhoods.find(c => c.data.slug === n.slug);
+    return {
+      params: { neighbourhood: n.slug },
+      props: {
+        label: content?.data.label ?? n.label,
+        strapline: content?.data.strapline ?? '',
+        pullQuote: content?.data.pullQuote ?? '',
+        restaurants: allRestaurants
+          .filter(r => r.data.neighbourhood === n.slug)
+          .sort((a, b) => (b.data.pick ? 1 : 0) - (a.data.pick ? 1 : 0)),
+      },
+    };
+  });
 }
 
-const { neighbourhood, restaurants } = Astro.props;
+const { label, strapline, pullQuote, restaurants } = Astro.props;
 ---
 
-<BaseLayout title={neighbourhood.label}>
+<BaseLayout title={label}>
 
   <div class="page-header">
-    <h1 class="page-title">{neighbourhood.label}</h1>
-    <p class="page-strapline">{neighbourhood.strapline}</p>
+    <h1 class="page-title">{label}</h1>
+    {strapline && <p class="page-strapline">{strapline}</p>}
   </div>
 
-  <div class="pull-quote">
-    <p>{neighbourhood.pullQuote}</p>
-  </div>
+  {pullQuote && (
+    <div class="pull-quote">
+      <p>{pullQuote}</p>
+    </div>
+  )}
 
   <div class="r-grid">
     {restaurants.length > 0

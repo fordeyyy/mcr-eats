@@ -1,0 +1,17 @@
+fragment RestaurantParts on Restaurant {
+  __typename
+  name
+  neighbourhood
+  cuisine
+  price
+  address
+  summary
+  website
+  mapsUrl
+  image
+  pick
+  moods
+  dishes
+  openDays
+  body
+}

@@ -25,4 +25,6 @@ pnpm-debug.log*
 
 # Netlify
 .netlify/
-.tina/__generated__
+
+# Tina build output
+public/admin/
